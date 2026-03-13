@@ -271,22 +271,20 @@ Use `@fastify/autoload` for automatic plugin loading:
 ```typescript
 import Fastify from 'fastify';
 import autoload from '@fastify/autoload';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { join } from 'node:path';
 
 const app = Fastify();
 
 // Load all plugins from the plugins directory
+// Always use import.meta.dirname, never __dirname or process.cwd()
 app.register(autoload, {
-  dir: join(__dirname, 'plugins'),
+  dir: join(import.meta.dirname, 'plugins'),
   options: { prefix: '/api' },
 });
 
 // Load all routes from the routes directory
 app.register(autoload, {
-  dir: join(__dirname, 'routes'),
+  dir: join(import.meta.dirname, 'routes'),
   options: { prefix: '/api' },
 });
 ```

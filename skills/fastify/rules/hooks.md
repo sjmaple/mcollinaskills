@@ -443,22 +443,12 @@ app.post('/orders', {
 
 ## Async Hook Patterns
 
-Always use async/await in hooks:
+Always use async/await in hooks. **Never use the callback style with a `done` parameter.**
 
 ```typescript
-// GOOD - async hook
+// CORRECT - always use async functions for hooks
 app.addHook('preHandler', async (request, reply) => {
   const user = await loadUser(request.headers.authorization);
   request.user = user;
-});
-
-// AVOID - callback style (deprecated)
-app.addHook('preHandler', (request, reply, done) => {
-  loadUser(request.headers.authorization)
-    .then((user) => {
-      request.user = user;
-      done();
-    })
-    .catch(done);
 });
 ```

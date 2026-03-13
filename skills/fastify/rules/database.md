@@ -11,7 +11,7 @@ metadata:
 
 Always use the official Fastify database plugins from the `@fastify` organization. They provide proper connection pooling, encapsulation, and integration with Fastify's lifecycle.
 
-## PostgreSQL with @fastify/postgres
+## PostgreSQL with `@fastify/postgres`
 
 ```typescript
 import Fastify from 'fastify';
@@ -37,6 +37,7 @@ app.get('/users', async (request) => {
 // Or use the pool directly for simple queries
 app.get('/users/:id', async (request) => {
   const { id } = request.params;
+  request.log.info({ userId: id }, 'Fetching user');
   const { rows } = await app.pg.query(
     'SELECT * FROM users WHERE id = $1',
     [id],
@@ -70,7 +71,7 @@ app.post('/transfer', async (request) => {
 });
 ```
 
-## MySQL with @fastify/mysql
+## MySQL with `@fastify/mysql`
 
 ```typescript
 import Fastify from 'fastify';
@@ -94,7 +95,7 @@ app.get('/users', async (request) => {
 });
 ```
 
-## MongoDB with @fastify/mongodb
+## MongoDB with `@fastify/mongodb`
 
 ```typescript
 import Fastify from 'fastify';
@@ -130,7 +131,7 @@ app.post('/users', async (request) => {
 });
 ```
 
-## Redis with @fastify/redis
+## Redis with `@fastify/redis`
 
 ```typescript
 import Fastify from 'fastify';
@@ -174,6 +175,11 @@ import fastifyPostgres from '@fastify/postgres';
 export default fp(async function databasePlugin(fastify) {
   await fastify.register(fastifyPostgres, {
     connectionString: fastify.config.DATABASE_URL,
+  });
+
+  // Clean up connection pool on shutdown
+  fastify.addHook('onClose', async () => {
+    await fastify.pg.pool.end();
   });
 
   // Add health check

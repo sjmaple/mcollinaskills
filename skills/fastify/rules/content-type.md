@@ -93,7 +93,7 @@ app.post('/xml', async (request) => {
 
 ## Multipart Form Data
 
-Use @fastify/multipart for file uploads. **Configure these critical options:**
+Use `@fastify/multipart` for file uploads. **Configure these critical options:**
 
 ```typescript
 import fastifyMultipart from '@fastify/multipart';
@@ -111,30 +111,23 @@ app.register(fastifyMultipart, {
   },
   // IMPORTANT: Throw on limit exceeded (default is to truncate silently!)
   throwFileSizeLimit: true,
-  // Attach all fields to request.body for easier access
+  // REQUIRED: Attach file fields to request.body for body-based access
   attachFieldsToBody: true,
-  // Only accept specific file types (security!)
-  // onFile: async (part) => {
-  //   if (!['image/jpeg', 'image/png'].includes(part.mimetype)) {
-  //     throw new Error('Invalid file type');
-  //   }
-  // },
 });
 
-// Handle file upload
+// Handle file upload — with attachFieldsToBody: true, access via request.body
 app.post('/upload', async (request, reply) => {
-  const data = await request.file();
+  const fileField = request.body?.file;
 
-  if (!data) {
+  if (!fileField) {
     return reply.code(400).send({ error: 'No file uploaded' });
   }
 
-  // data.file is a stream
-  const buffer = await data.toBuffer();
+  const buffer = await fileField.toBuffer();
 
   return {
-    filename: data.filename,
-    mimetype: data.mimetype,
+    filename: fileField.filename,
+    mimetype: fileField.mimetype,
     size: buffer.length,
   };
 });
@@ -324,7 +317,7 @@ app.addContentTypeParser(
 );
 ```
 
-## Form Data with @fastify/formbody
+## Form Data with `@fastify/formbody`
 
 Simple form parsing:
 

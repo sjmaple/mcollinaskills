@@ -7,7 +7,7 @@ metadata:
 
 # Authentication and Authorization
 
-## JWT Authentication with @fastify/jwt
+## JWT Authentication with `@fastify/jwt`
 
 Use `@fastify/jwt` for JSON Web Token authentication:
 
@@ -287,7 +287,7 @@ app.register(bearerAuth, {
 
 ## OAuth 2.0 Integration
 
-Integrate with OAuth providers using @fastify/oauth2:
+Integrate with OAuth providers using `@fastify/oauth2`:
 
 ```typescript
 import fastifyOauth2 from '@fastify/oauth2';
@@ -337,7 +337,7 @@ app.get('/auth/google/callback', async (request, reply) => {
 
 ## Session-Based Authentication
 
-Use @fastify/session for session management:
+Use `@fastify/session` for session management:
 
 ```typescript
 import fastifyCookie from '@fastify/cookie';
@@ -481,6 +481,33 @@ app.post('/login', async (request, reply) => {
 
   const token = app.jwt.sign({ id: user.id, role: user.role });
   return { token };
+});
+```
+
+## Auth Plugin Structure
+
+Package authentication as a reusable plugin using `fastify-plugin` (`fp`). **Always include `name` and `dependencies` in fp options:**
+
+```typescript
+import fp from 'fastify-plugin';
+import fastifyJwt from '@fastify/jwt';
+
+export default fp(async function authPlugin(fastify) {
+  fastify.register(fastifyJwt, {
+    secret: fastify.config.JWT_SECRET,
+    sign: { expiresIn: '15m' },
+  });
+
+  fastify.decorate('authenticate', async function (request, reply) {
+    try {
+      await request.jwtVerify();
+    } catch (err) {
+      reply.code(401).send({ error: 'Unauthorized' });
+    }
+  });
+}, {
+  name: 'auth',
+  dependencies: ['config', 'database'], // list plugins this plugin depends on
 });
 ```
 

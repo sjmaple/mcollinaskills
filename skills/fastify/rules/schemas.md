@@ -18,11 +18,12 @@ import { Type, type Static } from '@sinclair/typebox';
 const app = Fastify();
 
 // Define schema with TypeBox - get TypeScript types for free
+// Always set additionalProperties: false on input schemas (body, querystring) to reject extra fields
 const CreateUserBody = Type.Object({
   name: Type.String({ minLength: 1, maxLength: 100 }),
   email: Type.String({ format: 'email' }),
   age: Type.Optional(Type.Integer({ minimum: 0, maximum: 150 })),
-});
+}, { additionalProperties: false });
 
 const UserResponse = Type.Object({
   id: Type.String({ format: 'uuid' }),
@@ -122,6 +123,27 @@ app.get('/items', {
     },
   },
 }, handler);
+```
+
+## Typed Custom Errors with `@fastify/error`
+
+In schema-first routes, use `createError` from `@fastify/error` to define typed custom errors:
+
+```typescript
+import createError from '@fastify/error';
+
+const NotFoundError = createError('NOT_FOUND', '%s not found', 404);
+const ConflictError = createError('CONFLICT', '%s already exists', 409);
+
+app.get('/products/:id', {
+  schema: {
+    response: { 200: ProductResponse, 404: ErrorSchema },
+  },
+}, async (request) => {
+  const product = await findProduct(request.params.id);
+  if (!product) throw new NotFoundError('Product');
+  return product;
+});
 ```
 
 ## Plain JSON Schema (Alternative)
@@ -539,7 +561,7 @@ for (const schema of schemas) {
 
 ## OpenAPI/Swagger Integration
 
-Schemas work directly with @fastify/swagger:
+Schemas work directly with `@fastify/swagger`:
 
 ```typescript
 import fastifySwagger from '@fastify/swagger';
