@@ -7,7 +7,7 @@ metadata:
 
 # CORS and Security
 
-## CORS with @fastify/cors
+## CORS with `@fastify/cors`
 
 Enable Cross-Origin Resource Sharing:
 
@@ -90,7 +90,7 @@ app.route({
 });
 ```
 
-## Security Headers with @fastify/helmet
+## Security Headers with `@fastify/helmet`
 
 Add security headers:
 

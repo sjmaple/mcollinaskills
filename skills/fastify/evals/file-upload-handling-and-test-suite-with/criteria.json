@@ -1,0 +1,56 @@
+{
+  "context": "Tests whether the agent uses @fastify/multipart with explicit limits and throwFileSizeLimit: true, uses import.meta.dirname for static file paths, and writes tests using node:test with Fastify's inject() method.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "@fastify/multipart used",
+      "max_score": 10,
+      "description": "Imports and registers `@fastify/multipart` (NOT multer, busboy standalone, or formidable)"
+    },
+    {
+      "name": "throwFileSizeLimit: true",
+      "max_score": 14,
+      "description": "The @fastify/multipart registration includes `throwFileSizeLimit: true`"
+    },
+    {
+      "name": "Explicit limits object",
+      "max_score": 12,
+      "description": "The @fastify/multipart registration includes a `limits` object with at least two of: fileSize, files, fieldNameSize, parts, fields"
+    },
+    {
+      "name": "attachFieldsToBody option",
+      "max_score": 8,
+      "description": "The @fastify/multipart registration includes `attachFieldsToBody: true`"
+    },
+    {
+      "name": "import.meta.dirname for static path",
+      "max_score": 12,
+      "description": "Static file serving (or path joining) uses `import.meta.dirname` as the base path (NOT `process.cwd()` or `__dirname`)"
+    },
+    {
+      "name": "node:test imports",
+      "max_score": 11,
+      "description": "Test file imports `describe`, `it`, `before`, and/or `after` from `node:test` (NOT mocha, jest, vitest, or tap)"
+    },
+    {
+      "name": "app.inject() used in tests",
+      "max_score": 13,
+      "description": "Tests call `app.inject()` to simulate HTTP requests (NOT supertest, axios, node-fetch, or actual HTTP)"
+    },
+    {
+      "name": "app.close() in after()",
+      "max_score": 7,
+      "description": "Test file calls `app.close()` inside an `after()` (or afterEach) hook to clean up the server"
+    },
+    {
+      "name": "Logger disabled in tests",
+      "max_score": 7,
+      "description": "Test app is built with `logger: false` (or logger disabled) to keep test output clean"
+    },
+    {
+      "name": "Error case tested",
+      "max_score": 6,
+      "description": "Test suite includes at least one test that checks a non-200 status code (e.g., 400 when no file is provided)"
+    }
+  ]
+}

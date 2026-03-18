@@ -7,7 +7,7 @@ metadata:
 
 # WebSocket Support
 
-## Using @fastify/websocket
+## Using `@fastify/websocket`
 
 Add WebSocket support to Fastify:
 

@@ -405,7 +405,7 @@ app.register(async function (fastify) {
 });
 ```
 
-## Auto-loading Routes with @fastify/autoload
+## Auto-loading Routes with `@fastify/autoload`
 
 Use `@fastify/autoload` to automatically load routes from a directory structure:
 

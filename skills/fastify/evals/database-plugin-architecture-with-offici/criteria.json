@@ -1,0 +1,56 @@
+{
+  "context": "Tests whether the agent uses official @fastify/* database adapters, wraps plugins with fastify-plugin (fp) for shared decorators, declares plugin dependencies, registers @fastify/cors and @fastify/helmet, configures log redaction, and uses async hooks.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Official @fastify DB adapter",
+      "max_score": 14,
+      "description": "Uses an official @fastify database plugin (e.g., @fastify/postgres, @fastify/mysql, @fastify/mongodb) rather than a generic ORM or raw pg/mysql2/mongoose without the Fastify adapter"
+    },
+    {
+      "name": "fastify-plugin (fp) used",
+      "max_score": 12,
+      "description": "The database plugin AND/OR repositories plugin is wrapped with `fp()` from `fastify-plugin`"
+    },
+    {
+      "name": "onClose hook for cleanup",
+      "max_score": 10,
+      "description": "The database plugin registers an `onClose` hook to close/end the database connection"
+    },
+    {
+      "name": "Plugin name in fp options",
+      "max_score": 6,
+      "description": "At least one fastify-plugin call includes `name` in the options"
+    },
+    {
+      "name": "Plugin dependencies array",
+      "max_score": 8,
+      "description": "At least one fastify-plugin call includes `dependencies` array listing required plugins"
+    },
+    {
+      "name": "@fastify/cors registered",
+      "max_score": 10,
+      "description": "Registers `@fastify/cors` plugin on the app instance"
+    },
+    {
+      "name": "@fastify/helmet registered",
+      "max_score": 10,
+      "description": "Registers `@fastify/helmet` plugin on the app instance"
+    },
+    {
+      "name": "Log redaction configured",
+      "max_score": 10,
+      "description": "Pino logger configured with `redact` option masking at least authorization header, password, or token fields"
+    },
+    {
+      "name": "Async hooks used",
+      "max_score": 10,
+      "description": "All hook registrations use `async` functions (NOT callback-style with a `done` parameter)"
+    },
+    {
+      "name": "Structured logging in routes/hooks",
+      "max_score": 10,
+      "description": "At least one `request.log.info()` or similar call uses an object as first argument (e.g., `{ userId: x }`) rather than template strings"
+    }
+  ]
+}

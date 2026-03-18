@@ -143,7 +143,7 @@ app.get('/users/:id', {
 }, handler);
 ```
 
-## Reply Helpers with @fastify/sensible
+## Reply Helpers with `@fastify/sensible`
 
 Use `@fastify/sensible` for standard HTTP errors:
 

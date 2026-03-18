@@ -1,0 +1,56 @@
+{
+  "context": "Tests whether the agent uses TypeBox for schema definitions, registers @fastify/type-provider-typebox, defines response schemas on all routes for fast serialization, avoids dynamic schema compilation, and uses @fastify/error for typed custom errors.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "TypeBox schema definitions",
+      "max_score": 12,
+      "description": "Uses `@sinclair/typebox` Type.Object() / Type.String() / etc. to define at least the product body and response schemas (not plain JSON Schema literals)"
+    },
+    {
+      "name": "TypeBoxTypeProvider used",
+      "max_score": 10,
+      "description": "Calls `.withTypeProvider<TypeBoxTypeProvider>()` on the Fastify instance (imports TypeBoxTypeProvider from '@fastify/type-provider-typebox')"
+    },
+    {
+      "name": "Response schemas on all routes",
+      "max_score": 12,
+      "description": "Every route definition includes a `schema.response` object (all 5 routes: GET list, POST, GET single, PATCH, DELETE each define at least one response code schema)"
+    },
+    {
+      "name": "Schemas registered at startup",
+      "max_score": 10,
+      "description": "Schemas are defined outside handler functions and added via app.addSchema() or as static TypeBox const values — NOT computed or conditionally generated inside handlers or hooks"
+    },
+    {
+      "name": "Shared schema with $id and $ref",
+      "max_score": 8,
+      "description": "At least one schema uses `$id` and is referenced in route schemas via `{ $ref: '...' }` (reuse via app.addSchema)"
+    },
+    {
+      "name": "additionalProperties: false on input schemas",
+      "max_score": 8,
+      "description": "At least one body or query schema uses `additionalProperties: false` (or TypeBox Type.Object with the options, or strict schema) to prevent extra fields"
+    },
+    {
+      "name": "Pagination query schema",
+      "max_score": 8,
+      "description": "GET /products defines a querystring schema with `page` (integer with minimum 1) and `limit` (integer with maximum bound) fields"
+    },
+    {
+      "name": "@fastify/error used",
+      "max_score": 10,
+      "description": "Uses `createError` from `@fastify/error` to define at least one custom error (e.g., NotFoundError)"
+    },
+    {
+      "name": "TypeScript Static types derived",
+      "max_score": 10,
+      "description": "Uses `Static<typeof Schema>` from `@sinclair/typebox` to derive TypeScript types from schemas"
+    },
+    {
+      "name": "Error response schemas defined",
+      "max_score": 12,
+      "description": "At least one route defines a 404 or 4xx response schema for error responses"
+    }
+  ]
+}

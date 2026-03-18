@@ -7,7 +7,7 @@ metadata:
 
 # HTTP Proxy and Reply.from()
 
-## @fastify/http-proxy
+## `@fastify/http-proxy`
 
 Use `@fastify/http-proxy` for simple reverse proxy scenarios:
 
@@ -40,7 +40,7 @@ app.register(httpProxy, {
 await app.listen({ port: 3000 });
 ```
 
-## @fastify/reply-from
+## `@fastify/reply-from`
 
 For more control over proxying, use `@fastify/reply-from` with `reply.from()`:
 

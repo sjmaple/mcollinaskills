@@ -115,7 +115,7 @@ app.route<{
 
 ## Type Providers
 
-Use @fastify/type-provider-typebox for runtime + compile-time safety:
+Use `@fastify/type-provider-typebox` for runtime + compile-time safety:
 
 ```typescript
 import Fastify from 'fastify';

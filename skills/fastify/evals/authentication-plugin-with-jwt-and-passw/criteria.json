@@ -1,0 +1,61 @@
+{
+  "context": "Tests whether the agent uses @fastify/jwt for JWT, @node-rs/argon2 for password hashing, Redis-backed rate limiting, fastify-plugin (fp) for sharing the auth plugin, and TypeScript declaration merging for the request.user type.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "@fastify/jwt used",
+      "max_score": 12,
+      "description": "Imports and registers `@fastify/jwt` (NOT the `jsonwebtoken` package directly or other JWT libraries)"
+    },
+    {
+      "name": "@node-rs/argon2 for hashing",
+      "max_score": 12,
+      "description": "Uses `hash` and/or `verify` from `@node-rs/argon2` for password operations (NOT bcrypt, argon2, or other packages)"
+    },
+    {
+      "name": "Redis-backed rate limiting",
+      "max_score": 12,
+      "description": "Rate limiting configuration passes a Redis client instance (ioredis or redis) to the rate limiter — NOT purely in-memory rate limiting"
+    },
+    {
+      "name": "fastify-plugin (fp) wrapping",
+      "max_score": 10,
+      "description": "The auth plugin is wrapped with `fp()` from `fastify-plugin` (so its decorators are visible outside the plugin)"
+    },
+    {
+      "name": "TypeScript declaration merging",
+      "max_score": 10,
+      "description": "Uses `declare module 'fastify'` to extend `FastifyRequest` with a `user` property type"
+    },
+    {
+      "name": "Plugin name declared",
+      "max_score": 6,
+      "description": "The fastify-plugin call includes a `name` field in the options object"
+    },
+    {
+      "name": "Plugin dependencies declared",
+      "max_score": 6,
+      "description": "The fastify-plugin call includes a `dependencies` array in the options object"
+    },
+    {
+      "name": "JWT expiry configured",
+      "max_score": 8,
+      "description": "JWT registration includes `sign.expiresIn` option (short-lived access token, e.g. '15m' or '1h')"
+    },
+    {
+      "name": "argon2 hashing options",
+      "max_score": 8,
+      "description": "Password hashing call includes at least one of: `memoryCost`, `timeCost`, or `parallelism` option"
+    },
+    {
+      "name": "Rate limit keyGenerator uses IP + email",
+      "max_score": 8,
+      "description": "Rate limiter keyGenerator function combines request.ip with the email from request body (not just IP alone)"
+    },
+    {
+      "name": "Refresh token rotation",
+      "max_score": 8,
+      "description": "Refresh token endpoint deletes/invalidates the old refresh token before issuing a new one"
+    }
+  ]
+}

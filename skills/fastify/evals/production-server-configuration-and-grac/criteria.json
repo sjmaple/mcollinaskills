@@ -1,0 +1,56 @@
+{
+  "context": "Tests whether the agent scaffolds a production-ready Fastify server using env-schema for config validation, close-with-grace for graceful shutdown, @fastify/under-pressure for load shedding, and proper TypeScript setup with Node.js type stripping. Also checks that anti-patterns like config files and NODE_ENV checks are avoided.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "env-schema used",
+      "max_score": 12,
+      "description": "Uses the `env-schema` package to validate environment variables (import from 'env-schema' or 'env-schema/index.js')"
+    },
+    {
+      "name": "No config file imports",
+      "max_score": 10,
+      "description": "Does NOT import configuration from JSON files or per-environment JS/TS files (no `import config from './config/...'` or dynamic `import('./config/${env}')`)"
+    },
+    {
+      "name": "No NODE_ENV branching",
+      "max_score": 8,
+      "description": "Does NOT use `process.env.NODE_ENV === 'production'` (or similar) for conditional application logic — uses explicit env var flags instead"
+    },
+    {
+      "name": "close-with-grace used",
+      "max_score": 12,
+      "description": "Uses the `close-with-grace` package for graceful shutdown (import from 'close-with-grace', calls closeWithGrace())"
+    },
+    {
+      "name": "@fastify/under-pressure registered",
+      "max_score": 10,
+      "description": "Registers `@fastify/under-pressure` plugin on the Fastify instance"
+    },
+    {
+      "name": "Log redaction configured",
+      "max_score": 10,
+      "description": "Configures Pino logger redact option to mask at least one of: authorization header, password field, token field, or secret field"
+    },
+    {
+      "name": "Node.js type stripping in scripts",
+      "max_score": 10,
+      "description": "package.json scripts use `node app.ts` or `node src/server.ts` (NOT ts-node, tsx, tsc compilation, or npx ts-node)"
+    },
+    {
+      "name": "TypeBox used for config schema",
+      "max_score": 8,
+      "description": "Uses `@sinclair/typebox` Type.Object() to define the env-schema schema (not plain JSON Schema object literal)"
+    },
+    {
+      "name": "Config decorate/plugin pattern",
+      "max_score": 10,
+      "description": "Configuration is loaded in a fastify-plugin and attached via fastify.decorate('config', ...) rather than as a global variable"
+    },
+    {
+      "name": "Server listens on configurable host",
+      "max_score": 10,
+      "description": "app.listen() uses host value from configuration (not hardcoded '127.0.0.1' or 'localhost')"
+    }
+  ]
+}

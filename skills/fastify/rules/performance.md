@@ -16,7 +16,7 @@ Fastify is designed for performance. Key optimizations are built-in:
 - Schema-based validation with `ajv` (compiled validators)
 - Low overhead request/response handling
 
-## Use @fastify/under-pressure for Load Shedding
+## Use `@fastify/under-pressure` for Load Shedding
 
 Protect your application from overload with `@fastify/under-pressure`:
 
